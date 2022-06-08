@@ -2,7 +2,8 @@ package main
 
 import (
 	_config "be9/app-project/config"
-	_userController "be9/app-project/controllers/user"
+	_controllers "be9/app-project/controllers/user"
+	_entities "be9/app-project/entities"
 	"database/sql"
 	"fmt"
 )
@@ -14,17 +15,31 @@ func init() {
 }
 
 func main() {
-	fmt.Println("Pilih Menu: (1: Lihat Data)")
+	fmt.Println("Pilih Menu: (1: Register Account)")
 	var pilihan int
 	fmt.Scanln(&pilihan)
 
 	switch pilihan {
 	case 1:
-		results := _userController.GetAllUser(DBconn)
+		newAccount := _entities.User{}
+		fmt.Println("Input ID")
+		fmt.Scanln(&newAccount.ID)
+		fmt.Println("Input NAMA")
+		fmt.Scanln(&newAccount.Nama)
+		fmt.Println("Input Password")
+		fmt.Scanln(&newAccount.Password)
+		fmt.Println("Input Telp")
+		fmt.Scanln(&newAccount.Telp)
 
-		for _, v := range results {
-			fmt.Println("ID:", v.ID, "Nama", v.Nama, "Telp", v.Telp)
+		row, err := _controllers.AddAccount(DBconn, newAccount)
+
+		if err != nil {
+			fmt.Println("registration failed", err.Error())
+		} else {
+			fmt.Println("registration succes")
+			fmt.Println("row affect", row)
 		}
 
 	}
+
 }
