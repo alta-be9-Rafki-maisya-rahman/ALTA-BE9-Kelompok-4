@@ -13,7 +13,7 @@ func CreateTopUpBalance(db *sql.DB, newTopUpBalance _entities.TopUpBalance) (int
 	}
 	results, err := statement.Exec(newTopUpBalance.UserId, newTopUpBalance.NominalTopUp)
 
-	defer db.Close()
+	// defer db.Close()
 
 	if err != nil {
 		return 0, err
