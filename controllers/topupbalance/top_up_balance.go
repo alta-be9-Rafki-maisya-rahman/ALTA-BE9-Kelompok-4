@@ -3,6 +3,7 @@ package topupbalance
 import (
 	_entities "be9/app-project/entities"
 	"database/sql"
+	"fmt"
 )
 
 func CreateTopUpBalance(db *sql.DB, newTopUpBalance _entities.TopUpBalance) (int, error) {
@@ -18,7 +19,8 @@ func CreateTopUpBalance(db *sql.DB, newTopUpBalance _entities.TopUpBalance) (int
 	if err != nil {
 		return 0, err
 	} else {
-		var queryselect = (`SELECT user_balance.total_balance, user_balance.id_user FROM user_balance INNER JOIN user ON user.id = user_balance.id_user WHERE user.telp = ?`)
+		var queryselect = (`SELECT user_balance.total_balance, user_balance.id_user FROM user_balance 
+		INNER JOIN user ON user.id = user_balance.id_user WHERE user.telp = ?`)
 		var data1, data2 int
 		dataSaldo := db.QueryRow(queryselect, newTopUpBalance.Telp)
 		err := dataSaldo.Scan(&data1, &data2)
@@ -46,4 +48,24 @@ func CreateTopUpBalance(db *sql.DB, newTopUpBalance _entities.TopUpBalance) (int
 		// return int(row), nil
 	}
 
+}
+
+func GetHistoryTopUp(db *sql.DB, cekTopUp string) []_entities.TopUpBalance {
+	query1 := ("SELECT id, nominal_top_up, telp, created_at FROM top_up_balance WHERE telp = (?)")
+	results, err := db.Query(query1, cekTopUp)
+	if err != nil {
+		fmt.Println("error", err.Error())
+	}
+	defer db.Close()
+
+	var dataTopUpAll []_entities.TopUpBalance
+	for results.Next() {
+		var dataTopUp _entities.TopUpBalance
+		err := results.Scan(&dataTopUp.ID, &dataTopUp.NominalTopUp, &dataTopUp.Telp, &dataTopUp.Tanggal)
+		if err != nil {
+			fmt.Println("error scan", err.Error())
+		}
+		dataTopUpAll = append(dataTopUpAll, dataTopUp)
+	}
+	return dataTopUpAll
 }

@@ -6,7 +6,7 @@ import (
 
 	// _transferController "be9/app-project/controllers/transfer"
 
-	_entities "be9/app-project/entities"
+	// _entities "be9/app-project/entities"
 	"database/sql"
 	"fmt"
 )
@@ -19,68 +19,33 @@ func init() {
 
 func main() {
 	var pilihan int
-	fmt.Println("Pilih menu berikut: (1:Top Up) / (2:Transfer) / (3: Cek Saldo) / (4: Lihat History Top Up) / (5 : Lihat History Transfer)")
+	fmt.Println("Pilih menu berikut: (1:Top Up) / // (2:Cek History Top Up) / (3: Transfer) / (4: Cek History Transfer) / (5 : Keluar)")
 	fmt.Scanln(&pilihan)
 	switch pilihan {
 	case 1:
 		//Feature Top Up
-		newTopUpBalance := _entities.TopUpBalance{}
-		fmt.Println("Input Telp:")
-		fmt.Scanln(&newTopUpBalance.Telp)
-		fmt.Println("Input Nominal:")
-		fmt.Scanln(&newTopUpBalance.NominalTopUp)
+		// newTopUpBalance := _entities.TopUpBalance{}
+		// fmt.Println("Input Telp:")
+		// fmt.Scanln(&newTopUpBalance.Telp)
+		// fmt.Println("Input Nominal:")
+		// fmt.Scanln(&newTopUpBalance.NominalTopUp)
 
-		row, err := _topUpBalanceController.CreateTopUpBalance(DBconn, newTopUpBalance)
-		if err != nil {
-			fmt.Println("error insert", err.Error())
-		} else {
-			fmt.Println("Insert Success")
-			fmt.Println("row affect", row)
-		}
-
-		// var ubahUserBalance _entities.UserBalance
-		// fmt.Println("Input ID User:")
-		// fmt.Scanln(&ubahUserBalance.IdUser)
-		// fmt.Println("Input Saldo Top Up/Transfer:")
-		// fmt.Scanln(&ubahUserBalance.Saldo)
-
-		// row2_1, err := _userBalanceController.UpdateUserBalance(DBconn, ubahUserBalance)
-		// if err != nil {
-		// 	fmt.Println("error update", err.Error())
-		// } else {
-		// 	fmt.Println("update Success")
-		// 	fmt.Println("row affect", row2_1)
-		// }
-
-		// case 2:
-		//Transfer
-		// newTransfer := _entities.Transfer{}
-		// fmt.Println("Input ID Transfer Receiver:")
-		// fmt.Scanln(&newTransfer.TransferReceiver)
-		// fmt.Println("Input ID User Sent Transfer :")
-		// fmt.Scanln(&newTransfer.TransferUser)
-		// fmt.Println("Input Nominal Transfer :")
-		// fmt.Scanln(&newTransfer.NominalTransfer)
-
-		// row1, err := _transferController.CreateTransfer(DBconn, newTransfer)
+		// row, err := _topUpBalanceController.CreateTopUpBalance(DBconn, newTopUpBalance)
 		// if err != nil {
 		// 	fmt.Println("error insert", err.Error())
 		// } else {
 		// 	fmt.Println("Insert Success")
-		// 	fmt.Println("row affect", row1)
+		// 	fmt.Println("row affect", row)
 		// }
-		// case 3:
-		// 	var iduser int
-		// 	fmt.Print("Masukkan id user:")
-		// 	fmt.Scanln(&iduser)
-		// 	row, err := _userBalanceController.GetUserBalance(DBconn, iduser)
+	case 2:
+		var cekTopUp string
+		fmt.Println("input Telp:")
+		fmt.Scanln(&cekTopUp)
 
-		// 	if err != nil {
-		// 		fmt.Println("error get", err.Error())
-		// 	} else {
-		// 		fmt.Println("delete Succes")
-		// 		fmt.Println("row affect", row)
-		// 	}
+		result := _topUpBalanceController.GetHistoryTopUp(DBconn, cekTopUp)
+		for _, v := range result {
+			fmt.Println("ID:", v.ID, "Nominal Top Up:", v.NominalTopUp, "Tanggal:", v.Tanggal, "Telp:", v.Telp)
+		}
 	}
 
 }
