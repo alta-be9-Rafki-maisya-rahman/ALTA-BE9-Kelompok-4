@@ -5,7 +5,7 @@ import (
 	_topUpBalanceController "be9/app-project/controllers/topupbalance"
 
 	// _transferController "be9/app-project/controllers/transfer"
-	_userBalanceController "be9/app-project/controllers/userbalance"
+
 	_entities "be9/app-project/entities"
 	"database/sql"
 	"fmt"
@@ -25,8 +25,8 @@ func main() {
 	case 1:
 		//Feature Top Up
 		newTopUpBalance := _entities.TopUpBalance{}
-		fmt.Println("Input ID USER:")
-		fmt.Scanln(&newTopUpBalance.UserId)
+		fmt.Println("Input Telp:")
+		fmt.Scanln(&newTopUpBalance.Telp)
 		fmt.Println("Input Nominal:")
 		fmt.Scanln(&newTopUpBalance.NominalTopUp)
 
@@ -38,21 +38,21 @@ func main() {
 			fmt.Println("row affect", row)
 		}
 
-		var ubahUserBalance _entities.UserBalance
-		fmt.Println("Input ID User:")
-		fmt.Scanln(&ubahUserBalance.IdUser)
-		fmt.Println("Input Saldo Top Up/Transfer:")
-		fmt.Scanln(&ubahUserBalance.Saldo)
+		// var ubahUserBalance _entities.UserBalance
+		// fmt.Println("Input ID User:")
+		// fmt.Scanln(&ubahUserBalance.IdUser)
+		// fmt.Println("Input Saldo Top Up/Transfer:")
+		// fmt.Scanln(&ubahUserBalance.Saldo)
 
-		row2_1, err := _userBalanceController.UpdateUserBalance(DBconn, ubahUserBalance)
-		if err != nil {
-			fmt.Println("error update", err.Error())
-		} else {
-			fmt.Println("update Success")
-			fmt.Println("row affect", row2_1)
-		}
+		// row2_1, err := _userBalanceController.UpdateUserBalance(DBconn, ubahUserBalance)
+		// if err != nil {
+		// 	fmt.Println("error update", err.Error())
+		// } else {
+		// 	fmt.Println("update Success")
+		// 	fmt.Println("row affect", row2_1)
+		// }
 
-	case 2:
+		// case 2:
 		//Transfer
 		// newTransfer := _entities.Transfer{}
 		// fmt.Println("Input ID Transfer Receiver:")
@@ -69,7 +69,18 @@ func main() {
 		// 	fmt.Println("Insert Success")
 		// 	fmt.Println("row affect", row1)
 		// }
-	case 3:
+		// case 3:
+		// 	var iduser int
+		// 	fmt.Print("Masukkan id user:")
+		// 	fmt.Scanln(&iduser)
+		// 	row, err := _userBalanceController.GetUserBalance(DBconn, iduser)
+
+		// 	if err != nil {
+		// 		fmt.Println("error get", err.Error())
+		// 	} else {
+		// 		fmt.Println("delete Succes")
+		// 		fmt.Println("row affect", row)
+		// 	}
 	}
 
 }

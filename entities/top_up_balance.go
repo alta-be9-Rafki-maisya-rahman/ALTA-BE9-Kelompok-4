@@ -3,8 +3,9 @@ package entities
 import "time"
 
 type TopUpBalance struct {
-	ID      int
-	UserId  int
+	ID           int
+	Telp         string
+	UserId       int
 	NominalTopUp int
-	Tanggal time.Time
+	Tanggal      time.Time
 }
