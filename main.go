@@ -80,6 +80,10 @@ func main() {
 					fmt.Println("update berhasil")
 					fmt.Println("row affect", row)
 				}
+				return
+			case 2:
+
+			case 3:
 
 			}
 		}

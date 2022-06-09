@@ -6,7 +6,7 @@ import (
 )
 
 func UpdateUser(db *sql.DB, updateAccount _entities.User) (int, error) {
-	var query = ("update user set telp = ?, user_name=?, password = ? where telp=? ")
+	var query = ("update user set  user_name=?, telp=?, password=? where telp=? ")
 	statement, errPrepare := db.Prepare(query)
 	if errPrepare != nil {
 		return 0, errPrepare
