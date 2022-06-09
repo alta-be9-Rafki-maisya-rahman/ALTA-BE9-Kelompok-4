@@ -1,0 +1,3 @@
+package readprofile
+
+func ReadProfile()

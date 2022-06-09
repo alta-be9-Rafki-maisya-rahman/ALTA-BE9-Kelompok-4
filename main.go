@@ -2,12 +2,13 @@ package main
 
 import (
 	_config "be9/app-project/config"
+	_delete "be9/app-project/controllers/Delete_account"
+	_updateUser "be9/app-project/controllers/Update"
 	_login "be9/app-project/controllers/login"
 	_topUpBalanceController "be9/app-project/controllers/topupbalance"
 	_transferController "be9/app-project/controllers/transfer"
 	_controllers "be9/app-project/controllers/user"
 	_user "be9/app-project/controllers/user"
-
 	_entities "be9/app-project/entities"
 	"database/sql"
 	"fmt"
@@ -71,9 +72,44 @@ func main() {
 
 			case 2:
 				//update account
+				updateUser := _entities.User{}
+
+				fmt.Println("input user name baru")
+				fmt.Scanln(&updateUser.Nama)
+
+				fmt.Println("input Password baru anda")
+				fmt.Scanln(&updateUser.Password)
+
+				fmt.Println("input no telp anda")
+				fmt.Scanln(&updateUser.Telp)
+				if updateUser.Telp == loginUser.Telp {
+					row, err := _updateUser.UpdateAccount(DBconn, updateUser)
+					if err != nil {
+						fmt.Println("update gagal", err.Error())
+					} else {
+						fmt.Println("update berhasil")
+						fmt.Println("row affect", row)
+					}
+				} else {
+					fmt.Println("hanya bisa update akun anda !")
+				}
 
 			case 3:
 				//delete account
+
+				deleteUser := _entities.User{}
+				fmt.Println("input no telp anda")
+				fmt.Scanln(&deleteUser.Telp)
+				if deleteUser.Telp == loginUser.Telp {
+					row, err := _delete.DeleteAccount(DBconn, deleteUser)
+					if err != nil {
+						fmt.Println("Berhasil hapus account", row)
+					} else {
+						fmt.Println("Permintaan Anda Gagal", err.Error())
+					}
+				} else {
+					fmt.Println("Hanya bisa menghapus akun anda !")
+				}
 
 			case 4:
 				//Feature Top Up
