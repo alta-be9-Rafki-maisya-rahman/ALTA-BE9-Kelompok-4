@@ -14,8 +14,6 @@ func UserLogin(db *sql.DB, loginUser _entities.User) (int, error) {
 
 	result := statement.QueryRow(loginUser.Telp, loginUser.Password)
 
-	// defer db.Close()
-
 	var id_user int
 	err := result.Scan(&id_user)
 	if err != nil {
