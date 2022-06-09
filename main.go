@@ -5,6 +5,7 @@ import (
 	_delete "be9/app-project/controllers/Delete_account"
 	_updateUser "be9/app-project/controllers/Update"
 	_login "be9/app-project/controllers/login"
+	_readprofile "be9/app-project/controllers/readprofile"
 	_topUpBalanceController "be9/app-project/controllers/topupbalance"
 	_transferController "be9/app-project/controllers/transfer"
 	_controllers "be9/app-project/controllers/user"
@@ -69,6 +70,16 @@ func main() {
 			switch userMenu {
 			case 1:
 				//read account
+				readAccount := _entities.User{}
+				fmt.Print("Masukkan Telp:")
+				fmt.Scanln(&readAccount.Telp)
+
+				if readAccount.Telp == loginUser.Telp {
+					hasil := _readprofile.GetDataAccount(DBconn, readAccount)
+					fmt.Println("Nama", hasil.Nama, "password:", hasil.Password, "Telp:", hasil.Telp, "Waktu join", hasil.Tanggal)
+				} else {
+					fmt.Println("Hanya bisa membaca akun anda")
+				}
 
 			case 2:
 				//update account

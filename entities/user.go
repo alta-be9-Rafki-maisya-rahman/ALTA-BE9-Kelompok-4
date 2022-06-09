@@ -5,4 +5,5 @@ type User struct {
 	Nama     string
 	Password string
 	Telp     string
+	Tanggal  string
 }
