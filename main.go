@@ -19,7 +19,7 @@ func init() {
 
 func main() {
 	var pilihan int
-	fmt.Println("Pilih menu berikut: (1:Top Up) / // (2:Cek History Top Up) / (3: Lihat Pengguna Lain) / (4 : Transfer) / (5 : Cek History Transfer)")
+	fmt.Println("Pilih menu berikut: (1:Top Up) / // (2:Cek History Top Up) / (3: Lihat Pengguna Lain) / (4 : Transfer) / (5 : Cek History Transfer) / (0 : Keluar)")
 	fmt.Scanln(&pilihan)
 	switch pilihan {
 	case 1:
@@ -37,6 +37,9 @@ func main() {
 			fmt.Println("Insert Success")
 			fmt.Println("row affect", row)
 		}
+		fmt.Println("Input 0 untuk keluar")
+		fmt.Scanln(&pilihan)
+
 	case 2:
 		var cekTopUp1 string
 		fmt.Println("input Telp:")
@@ -46,6 +49,8 @@ func main() {
 		for _, v := range result {
 			fmt.Println("ID:", v.ID, "Nominal Top Up:", v.NominalTopUp, "Tanggal:", v.Tanggal, "Telp:", v.Telp)
 		}
+		fmt.Println("Input 0 untuk keluar")
+		fmt.Scanln(&pilihan)
 	case 3:
 		searchOtherUser := ""
 		fmt.Print("Masukkan Telp:")
@@ -59,6 +64,8 @@ func main() {
 		} else {
 			fmt.Println(" Pengguna Tidak Ada")
 		}
+		fmt.Println("Input 0 untuk keluar")
+		fmt.Scanln(&pilihan)
 
 	case 4:
 		newtransfer := _entities.Transfer{}
@@ -76,6 +83,8 @@ func main() {
 			fmt.Println("Insert Success")
 			fmt.Println("row affect", row)
 		}
+		fmt.Println("Input 0 untuk keluar")
+		fmt.Scanln(&pilihan)
 	case 5:
 		historyTransfer := _entities.Transfer{}
 		fmt.Print("Masukkan Telp:")
@@ -85,6 +94,11 @@ func main() {
 		for _, v := range results {
 			fmt.Println("Nominal Transfer", v.NominalTransfer, "No.Pengirim", v.TransferUser, "No.Penerima", v.TransferReceiver, "Tanggal:", v.Tanggal)
 		}
+		fmt.Println("Input 0 untuk keluar")
+		fmt.Scanln(&pilihan)
 	}
 
+	if pilihan == 0 {
+		fmt.Println("Terima Kasih Telah Bertransaki")
+	}
 }
