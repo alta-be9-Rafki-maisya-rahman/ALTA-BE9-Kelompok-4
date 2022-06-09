@@ -19,8 +19,8 @@ func CreateTopUpBalance(db *sql.DB, newTopUpBalance _entities.TopUpBalance) (int
 	if err != nil {
 		return 0, err
 	} else {
-		var queryselect = (`SELECT user_balance.total_balance, user_balance.id_user FROM user_balance 
-		INNER JOIN user ON user.id = user_balance.id_user WHERE user.telp = ?`)
+		var queryselect = (`SELECT user_balance.total_balance, user_balance.telp FROM user_balance 
+		INNER JOIN user ON user.telp = user_balance.telp WHERE user.telp = ?`)
 		var data1, data2 int
 		dataSaldo := db.QueryRow(queryselect, newTopUpBalance.Telp)
 		err := dataSaldo.Scan(&data1, &data2)
@@ -29,7 +29,7 @@ func CreateTopUpBalance(db *sql.DB, newTopUpBalance _entities.TopUpBalance) (int
 			return 0, err
 		} else {
 			balanceUpdate := data1 + newTopUpBalance.NominalTopUp
-			var query = (`UPDATE user_balance SET total_balance= (?) WHERE id_user=(?)`)
+			var query = (`UPDATE user_balance SET total_balance= (?) WHERE telp=(?)`)
 			statement, errPrepare := db.Prepare(query)
 			if errPrepare != nil {
 				return 0, errPrepare
@@ -44,14 +44,12 @@ func CreateTopUpBalance(db *sql.DB, newTopUpBalance _entities.TopUpBalance) (int
 			}
 
 		}
-		// row, _ := results.RowsAffected()
-		// return int(row), nil
 	}
 
 }
 
 func GetHistoryTopUp(db *sql.DB, cekTopUp string) []_entities.TopUpBalance {
-	query1 := ("SELECT id, nominal_top_up, telp, created_at FROM top_up_balance WHERE telp = (?)")
+	query1 := ("SELECT id, nominal_top_up, telp, created_at FROM top_up_balance WHERE telp = (?) ORDER BY created_at DESC")
 	results, err := db.Query(query1, cekTopUp)
 	if err != nil {
 		fmt.Println("error", err.Error())

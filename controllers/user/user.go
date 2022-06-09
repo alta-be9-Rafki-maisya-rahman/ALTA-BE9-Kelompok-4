@@ -21,6 +21,7 @@ func SearchUser(db *sql.DB, telp string) []_entities.User {
 		if err != nil {
 			fmt.Println("error scan", err.Error())
 		}
+
 		dataPengguna = append(dataPengguna, dataPengguna1)
 	}
 	return dataPengguna
