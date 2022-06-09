@@ -82,3 +82,23 @@ func CreateTransfer(db *sql.DB, newtransfer _entities.Transfer) (int, error) {
 	}
 	return 0, fmt.Errorf("")
 }
+
+func GetDataTransfer(db *sql.DB, historyTransfer _entities.Transfer) []_entities.Transfer {
+	var query = ("SELECT nominal_transfer, transfer_user, transfer_receiver, created_at FROM transfer WHERE transfer_user = (?) ORDER BY created_at DESC")
+	results, err := db.Query(query, historyTransfer.TransferUser)
+
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
+	var dataTransfer []_entities.Transfer
+	for results.Next() {
+		var dataList _entities.Transfer
+		err := results.Scan(&dataList.NominalTransfer, &dataList.TransferUser, &dataList.TransferReceiver, &dataList.Tanggal)
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		dataTransfer = append(dataTransfer, dataList)
+	}
+	return dataTransfer
+}

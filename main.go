@@ -19,7 +19,7 @@ func init() {
 
 func main() {
 	var pilihan int
-	fmt.Println("Pilih menu berikut: (1:Top Up) / // (2:Cek History Top Up) / (3: Lihat Pengguna Lain) / (4 : Transfer)")
+	fmt.Println("Pilih menu berikut: (1:Top Up) / // (2:Cek History Top Up) / (3: Lihat Pengguna Lain) / (4 : Transfer) / (5 : Cek History Transfer)")
 	fmt.Scanln(&pilihan)
 	switch pilihan {
 	case 1:
@@ -75,6 +75,15 @@ func main() {
 		} else {
 			fmt.Println("Insert Success")
 			fmt.Println("row affect", row)
+		}
+	case 5:
+		historyTransfer := _entities.Transfer{}
+		fmt.Print("Masukkan Telp:")
+		fmt.Scanln(&historyTransfer.TransferUser)
+
+		results := _transferController.GetDataTransfer(DBconn, historyTransfer)
+		for _, v := range results {
+			fmt.Println("Nominal Transfer", v.NominalTransfer, "No.Pengirim", v.TransferUser, "No.Penerima", v.TransferReceiver, "Tanggal:", v.Tanggal)
 		}
 	}
 
