@@ -6,21 +6,22 @@ import (
 	"fmt"
 )
 
-func GetAllUser(db *sql.DB) []_entities.User {
-	results, err := db.Query("SELECT id, user_name, telp, password FROM user")
-	if err != nil {
-		fmt.Println("error", err.Error())
-	}
+func SearchUser(db *sql.DB, telp string) []_entities.User {
+	querysearch := ("SELECT id, user_name, telp FROM user WHERE telp=(?)")
 	defer db.Close()
+	dataUser, err := db.Query(querysearch, telp)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 
-	var userAll []_entities.User
-	for results.Next() {
-		var user _entities.User
-		err := results.Scan(&user.ID, &user.Nama, &user.Telp, &user.Password)
+	var dataPengguna []_entities.User
+	for dataUser.Next() {
+		var dataPengguna1 _entities.User
+		err := dataUser.Scan(&dataPengguna1.ID, &dataPengguna1.Nama, &dataPengguna1.Telp)
 		if err != nil {
 			fmt.Println("error scan", err.Error())
 		}
-		userAll = append(userAll, user)
+		dataPengguna = append(dataPengguna, dataPengguna1)
 	}
-	return userAll
+	return dataPengguna
 }
