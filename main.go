@@ -247,10 +247,16 @@ func main() {
 						fmt.Scanln(&pilihan)
 					}
 
+				case 0:
+					if userMenu == 0 {
+						fmt.Println("Tekan 0 lagi untuk keluar")
+						fmt.Scanln(&pilihan)
+					}
 				}
+
 			}
 			for pilihan == 0 {
-				fmt.Println("Terima Kasih Telah Bertransaki")
+				fmt.Print("Terima Kasih Telah Bertransaksi")
 				break
 			}
 
