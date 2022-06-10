@@ -62,133 +62,209 @@ func main() {
 		} else {
 			fmt.Println("login succes")
 			fmt.Println("row affect", row)
+			for pilihan == 2 {
 
-			var userMenu int
-			fmt.Println("1. Read account /n 2. Update account /n 3. Delete account /n 4. top-up /n 5. transfer /n 6. history top-up /n 7. history transfer /n 8. lihat profil lain /n 0. keluar")
+				var userMenu int
+				fmt.Println("1. Read account /n 2. Update account /n 3. Delete account /n 4. top-up /n 5. transfer /n 6. history top-up /n 7. history transfer /n 8. lihat profil lain /n 0. keluar")
 
-			fmt.Scanln(&userMenu)
-			switch userMenu {
-			case 1:
-				//read account
-				readAccount := _entities.User{}
-				fmt.Print("Masukkan Telp:")
-				fmt.Scanln(&readAccount.Telp)
+				fmt.Scanln(&userMenu)
+				switch userMenu {
+				case 1:
+					//read account
+					readAccount := _entities.User{}
+					fmt.Print("Masukkan Telp:")
+					fmt.Scanln(&readAccount.Telp)
 
-				if readAccount.Telp == loginUser.Telp {
-					hasil := _readprofile.GetDataAccount(DBconn, readAccount)
-					fmt.Println("Nama", hasil.Nama, "password:", hasil.Password, "Telp:", hasil.Telp, "Waktu join", hasil.Tanggal)
-				} else {
-					fmt.Println("Hanya bisa membaca akun anda")
-				}
-
-			case 2:
-				//update account
-				updateUser := _entities.User{}
-
-				fmt.Println("input user name baru")
-				fmt.Scanln(&updateUser.Nama)
-
-				fmt.Println("input Password baru anda")
-				fmt.Scanln(&updateUser.Password)
-
-				fmt.Println("input no telp anda")
-				fmt.Scanln(&updateUser.Telp)
-				if updateUser.Telp == loginUser.Telp {
-					row, err := _updateUser.UpdateAccount(DBconn, updateUser)
-					if err != nil {
-						fmt.Println("update gagal", err.Error())
+					if readAccount.Telp == loginUser.Telp {
+						hasil := _readprofile.GetDataAccount(DBconn, readAccount)
+						fmt.Println("Nama", hasil.Nama, "password:", hasil.Password, "Telp:", hasil.Telp, "Waktu join", hasil.Tanggal)
 					} else {
-						fmt.Println("update berhasil")
+						fmt.Println("Hanya bisa membaca akun anda")
+					}
+
+					var i int
+					fmt.Println("Untuk Kembali ke menu (input 2) " + "&" + " Untuk Keluar sistem (input 0):")
+					if i == 2 {
+						fmt.Scanln(&pilihan)
+					} else if i == 0 {
+						fmt.Scanln(&pilihan)
+					}
+
+				case 2:
+					//update account
+					updateUser := _entities.User{}
+
+					fmt.Println("input user name baru")
+					fmt.Scanln(&updateUser.Nama)
+
+					fmt.Println("input Password baru anda")
+					fmt.Scanln(&updateUser.Password)
+
+					fmt.Println("input no telp anda")
+					fmt.Scanln(&updateUser.Telp)
+					if updateUser.Telp == loginUser.Telp {
+						row, err := _updateUser.UpdateAccount(DBconn, updateUser)
+						if err != nil {
+							fmt.Println("update gagal", err.Error())
+						} else {
+							fmt.Println("update berhasil")
+							fmt.Println("row affect", row)
+						}
+					} else {
+						fmt.Println("hanya bisa update akun anda !")
+					}
+
+					var i int
+					fmt.Println("Untuk Kembali ke menu (input 2) " + "&" + " Untuk Keluar sistem (input 0):")
+					if i == 2 {
+						fmt.Scanln(&pilihan)
+					} else if i == 0 {
+						fmt.Scanln(&pilihan)
+					}
+
+				case 3:
+					//delete account
+
+					deleteUser := _entities.User{}
+					fmt.Println("input no telp anda")
+					fmt.Scanln(&deleteUser.Telp)
+					if deleteUser.Telp == loginUser.Telp {
+						row, err := _delete.DeleteAccount(DBconn, deleteUser)
+						if err != nil {
+							fmt.Println("Berhasil hapus account", row)
+						} else {
+							fmt.Println("Permintaan Anda Gagal", err.Error())
+						}
+					} else {
+						fmt.Println("Hanya bisa menghapus akun anda !")
+					}
+
+					var i int
+					fmt.Println("Untuk Kembali ke menu (input 2) " + "&" + " Untuk Keluar sistem (input 0):")
+					if i == 2 {
+						fmt.Scanln(&pilihan)
+					} else if i == 0 {
+						fmt.Scanln(&pilihan)
+					}
+
+				case 4:
+					//Feature Top Up
+					newTopUpBalance := _entities.TopUpBalance{}
+					fmt.Println("Input Telp:")
+					fmt.Scanln(&newTopUpBalance.Telp)
+					fmt.Println("Input Nominal:")
+					fmt.Scanln(&newTopUpBalance.NominalTopUp)
+
+					row, err := _topUpBalanceController.CreateTopUpBalance(DBconn, newTopUpBalance)
+					if err != nil {
+						fmt.Println("error insert", err.Error())
+					} else {
+						fmt.Println("Insert Success")
 						fmt.Println("row affect", row)
 					}
-				} else {
-					fmt.Println("hanya bisa update akun anda !")
-				}
 
-			case 3:
-				//delete account
+					var i int
+					fmt.Println("Untuk Kembali ke menu (input 2) " + "&" + " Untuk Keluar sistem (input 0):")
+					if i == 2 {
+						fmt.Scanln(&pilihan)
+					} else if i == 0 {
+						fmt.Scanln(&pilihan)
+					}
 
-				deleteUser := _entities.User{}
-				fmt.Println("input no telp anda")
-				fmt.Scanln(&deleteUser.Telp)
-				if deleteUser.Telp == loginUser.Telp {
-					row, err := _delete.DeleteAccount(DBconn, deleteUser)
+				case 5:
+					//transfer
+					newtransfer := _entities.Transfer{}
+					fmt.Print("Masukkan Telp Pengirim:")
+					fmt.Scanln(&newtransfer.TransferUser)
+					fmt.Print("Masukkan Telp Penerima:")
+					fmt.Scanln(&newtransfer.TransferReceiver)
+					fmt.Print("Masukkan Nominal Transfer:")
+					fmt.Scanln(&newtransfer.NominalTransfer)
+
+					row, err := _transferController.CreateTransfer(DBconn, newtransfer)
 					if err != nil {
-						fmt.Println("Berhasil hapus account", row)
+						fmt.Println("error insert", err.Error())
 					} else {
-						fmt.Println("Permintaan Anda Gagal", err.Error())
+						fmt.Println("Insert Success")
+						fmt.Println("row affect", row)
 					}
-				} else {
-					fmt.Println("Hanya bisa menghapus akun anda !")
-				}
 
-			case 4:
-				//Feature Top Up
-				newTopUpBalance := _entities.TopUpBalance{}
-				fmt.Println("Input Telp:")
-				fmt.Scanln(&newTopUpBalance.Telp)
-				fmt.Println("Input Nominal:")
-				fmt.Scanln(&newTopUpBalance.NominalTopUp)
-
-				row, err := _topUpBalanceController.CreateTopUpBalance(DBconn, newTopUpBalance)
-				if err != nil {
-					fmt.Println("error insert", err.Error())
-				} else {
-					fmt.Println("Insert Success")
-					fmt.Println("row affect", row)
-				}
-
-			case 5:
-				//transfer
-				newtransfer := _entities.Transfer{}
-				fmt.Print("Masukkan Telp Pengirim:")
-				fmt.Scanln(&newtransfer.TransferUser)
-				fmt.Print("Masukkan Telp Penerima:")
-				fmt.Scanln(&newtransfer.TransferReceiver)
-				fmt.Print("Masukkan Nominal Transfer:")
-				fmt.Scanln(&newtransfer.NominalTransfer)
-
-				row, err := _transferController.CreateTransfer(DBconn, newtransfer)
-				if err != nil {
-					fmt.Println("error insert", err.Error())
-				} else {
-					fmt.Println("Insert Success")
-					fmt.Println("row affect", row)
-				}
-
-			case 6:
-				//history top-up
-				var cekTopUp1 string
-				fmt.Println("input Telp:")
-				fmt.Scanln(&cekTopUp1)
-
-				result := _topUpBalanceController.GetHistoryTopUp(DBconn, cekTopUp1)
-				for _, v := range result {
-					fmt.Println("ID:", v.ID, "Nominal Top Up:", v.NominalTopUp, "Tanggal:", v.Tanggal, "Telp:", v.Telp)
-				}
-
-			case 7:
-				//history transfer
-
-			case 8:
-				//lihat profil user lain
-				searchOtherUser := ""
-				fmt.Print("Masukkan Telp:")
-				fmt.Scanln(&searchOtherUser)
-
-				row := _user.SearchUser(DBconn, searchOtherUser)
-				if len(row) != 0 {
-					for _, v := range row {
-						fmt.Println("ID:", v.ID, "Nama:", v.Nama, "Telp:", v.Telp)
+					var i int
+					fmt.Println("Untuk Kembali ke menu (input 2) " + "&" + " Untuk Keluar sistem (input 0):")
+					if i == 2 {
+						fmt.Scanln(&pilihan)
+					} else if i == 0 {
+						fmt.Scanln(&pilihan)
 					}
-				} else {
-					fmt.Println(" Pengguna Tidak Ada")
-				}
 
-			case 0:
-				//keluar & ucapan terima kasih
+				case 6:
+					//history top-up
+					var cekTopUp1 string
+					fmt.Println("input Telp:")
+					fmt.Scanln(&cekTopUp1)
+
+					result := _topUpBalanceController.GetHistoryTopUp(DBconn, cekTopUp1)
+					for _, v := range result {
+						fmt.Println("ID:", v.ID, "Nominal Top Up:", v.NominalTopUp, "Tanggal:", v.Tanggal, "Telp:", v.Telp)
+					}
+
+					var i int
+					fmt.Println("Untuk Kembali ke menu (input 2) " + "&" + " Untuk Keluar sistem (input 0):")
+					if i == 2 {
+						fmt.Scanln(&pilihan)
+					} else if i == 0 {
+						fmt.Scanln(&pilihan)
+					}
+
+				case 7:
+					//history transfer
+					historyTransfer := _entities.Transfer{}
+					fmt.Print("Masukkan Telp:")
+					fmt.Scanln(&historyTransfer.TransferUser)
+
+					results := _transferController.GetDataTransfer(DBconn, historyTransfer)
+					for _, v := range results {
+						fmt.Println("Nominal Transfer", v.NominalTransfer, "No.Pengirim", v.TransferUser, "No.Penerima", v.TransferReceiver, "Tanggal:", v.Tanggal)
+					}
+					var i int
+					fmt.Println("Untuk Kembali ke menu (input 2) " + "&" + " Untuk Keluar sistem (input 0):")
+					if i == 2 {
+						fmt.Scanln(&pilihan)
+					} else if i == 0 {
+						fmt.Scanln(&pilihan)
+					}
+				case 8:
+					//lihat profil user lain
+					searchOtherUser := ""
+					fmt.Print("Masukkan Telp:")
+					fmt.Scanln(&searchOtherUser)
+
+					row := _user.SearchUser(DBconn, searchOtherUser)
+					if len(row) != 0 {
+						for _, v := range row {
+							fmt.Println("ID:", v.ID, "Nama:", v.Nama, "Telp:", v.Telp)
+						}
+					} else {
+						fmt.Println(" Pengguna Tidak Ada")
+					}
+
+					var i int
+					fmt.Println("Untuk Kembali ke menu (input 2) " + "&" + " Untuk Keluar sistem (input 0):")
+					if i == 2 {
+						fmt.Scanln(&pilihan)
+					} else if i == 0 {
+						fmt.Scanln(&pilihan)
+					}
+
+				}
 
 			}
+
+			for pilihan == 0 {
+				fmt.Println("Terima Kasih Telah Bertransaksi")
+				break
+			}
+
 		}
 	}
 }
