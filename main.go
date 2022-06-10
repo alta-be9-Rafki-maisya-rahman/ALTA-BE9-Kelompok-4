@@ -5,6 +5,7 @@ import (
 	_login "be9/app-project/controllers/login"
 	_topUpBalanceController "be9/app-project/controllers/topupbalance"
 	_transferController "be9/app-project/controllers/transfer"
+	_controllers "be9/app-project/controllers/user"
 	_user "be9/app-project/controllers/user"
 
 	_entities "be9/app-project/entities"
@@ -263,5 +264,4 @@ func main() {
 		}
 
 	}
-
 }

@@ -34,7 +34,6 @@ func SearchUser(db *sql.DB, telp string) []_entities.User {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-
 	var dataPengguna []_entities.User
 	for dataUser.Next() {
 		var dataPengguna1 _entities.User
